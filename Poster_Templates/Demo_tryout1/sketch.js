@@ -3,7 +3,7 @@ let buffer;
 let buffer2;
 let imagePixels = [];
 
-//Hier kommt unser Photoshopdokument rein mit den Linien (1Bild für Anfang, 1 Bild für Ende)
+//Photoshop dec with the colour coded lines (1Bild für Anfang, 1 Bild für Ende)
 /*function preload(){
 buffer = 
 buffer2 =
@@ -52,8 +52,8 @@ constructor(startx, starty){
   this.inStartPos = false;
   this.posx = this.startx;
   this.posy = this.startx;
-  //this.posX = this.startX * screen1.w
- // this.posY = this.startY * screen1.h
+  this.posx = this.startx * screen1.w
+  this.posx = this.starty * screen1.h
 }
 setEnd(endx, endy) {
   this.endx = endx;
