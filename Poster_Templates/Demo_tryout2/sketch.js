@@ -17,8 +17,12 @@ function setup() {
   textAlign(CENTER, CENTER);
   textSize(10 * poster.vw);
 
-  lines[0] = new line(width*0.2, height*0.2)
+  lines[0] = new symbol(width*0.2, height*0.2)
   lines[0].setEnd(width*0.8,height*0.8)
+
+
+  lines[1] = new symbol(width*0.3, height*0.2)
+  lines[1].setEnd(width*0.6,height*0.8)
 }
 
 function setuplines(){
@@ -44,7 +48,7 @@ function windowScaled() { // this is a custom event called whenever the poster i
 }
 
 
-class line {
+class symbol {
 
 constructor(startx, starty){
   this.startx = startx;
@@ -72,13 +76,18 @@ setEnd(endx, endy) {
 
 
 display() {
-  if(poster.position.x >= this.posx-5 && poster.position.x <= this.posx+5) {
+ /* if(poster.position.x >= this.posx-5 && poster.position.x <= this.posx+5) {
     console.log(this.inStartPos)
       this.inStartPos =  !this.inStartPos
   }
 
   let lerpedPosx = lerp(this.startx, this.endx, this.inStartPos ? 0 : 1);
   let lerpedPosy = lerp(this.starty, this.endy, this.inStartPos ? 0 : 1);
+*/
+
+  let constrainedX = constrain(poster.posNormal.x, 0.2, 0.8);
+ let lerpedPosx = map(constrainedX, 0.2, 0.8,  this.startx ,  this.endx);
+ let lerpedPosy = map(constrainedX, 0.2, 0.8,  this.starty ,  this.endy);
 
     this.posx = lerpedPosx;
     this.posy = lerpedPosy;
@@ -86,8 +95,8 @@ display() {
     //this.posx = map(this.poster.position.x, 0, 1, this.startx * screen1.w, screen3.x + (this.endx * screen1.w))
     //this.posy = map(this.poster.position.x, 0, 1, this.starty * screen1.h, screen3.y + (this.endy * screen1.h))
   
-
-    rect(this.posx, this.posy, 10, 10);
+  stroke(255) 
+    line(this.posx-10, this.posy, this.posx+10, this.posy);
   }
 }
 
