@@ -5,8 +5,8 @@ let imagePixels = [];
 
 //Photoshop dec with the colour coded lines (1Bild für Anfang, 1 Bild für Ende)
 /*function preload(){
-buffer = 
-buffer2 =
+buffer = loadImage()
+buffer2 = loadImage()
 
 }*/
 
@@ -22,7 +22,7 @@ function setup() {
   line.setEnd(width*0.8,height*0.8)
 }
 
-// Looping through the lines of the typography and taking the ones wich are on  the y axis
+// Looping through the lines of the typography and moving the elements of the typography
 /*function setupLines(){
   lines = [];
 }
@@ -49,19 +49,21 @@ class line {
 constructor(startx, starty){
   this.startx = startx;
   this.starty = starty;
+  this.animationPos = 0;
   this.inStartPos = false;
+  this.animationSpeed = 0.03;
   this.posx = this.startx;
   this.posy = this.startx;
-  this.posx = this.startx * screen1.w
-  this.posx = this.starty * screen1.h
+  //this.posx = this.startx * screen1.w
+  //this.posx = this.starty * screen1.h
 }
 setEnd(endx, endy) {
   this.endx = endx;
   this.endy = endy;
 }
+
+
 display() {
-
-
   if(poster.position.x >= this.posx-5 && poster.position.x <= this.posx+5) {
     console.log(this.inStartPos)
       this.inStartPos =  !this.inStartPos;
@@ -73,6 +75,10 @@ display() {
 
     this.posx = lerpedPosx;
     this.posy = lerpedPosy;
+
+    //this.posx = map(this.poster.position.x, 0, 1, this.startx * screen1.w, screen3.x + (this.endx * screen1.w))
+    //this.posy = map(this.poster.position.x, 0, 1, this.starty * screen1.h, screen3.y + (this.endy * screen1.h))
+  
 
     rect(this.posx, this.posy, 10, 10);
   }
