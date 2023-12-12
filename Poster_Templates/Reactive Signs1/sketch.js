@@ -12,7 +12,7 @@ function preload() {
 // SETUP
 function setup() {
   createCanvas(poster.getWindowWidth(), poster.getWindowHeight()); // Don't remove this line.
-  poster.setup(this,  "/Poster_Templates/libraries/assets/models/movenet/model.json");  // Don't remove this line.
+  poster.setup(this, "/Poster_Templates/libraries/assets/models/movenet/model.json");  // Don't remove this line.
   textAlign(CENTER, CENTER);
   textSize(10 * poster.vw);
 
@@ -26,13 +26,13 @@ function setup() {
 function draw() {
   // Hintergrundfarbe ändern, wenn pos x in der Mitte des Bildschirms ist
   if (poster.posNormal.x < 0.5) {
-    background(255, 255, 255, 50);
+    background(255, 255, 255,);
     stroke(0);
   } else {
-    background(0, 0, 0, 50);
+    background(0, 0, 0,);
     stroke(255);
   }
-  
+
   // Schleife durch die Linien
   for (let i = 0; i < lines.length; i++) {
     lines[i].update();
@@ -46,12 +46,14 @@ function draw() {
 class symbol {
   constructor(startx, starty, endx, endy, startAngle) {
     this.startx = startx;
+    this.originalStartAngle = startAngle; // Speichert den ursprünglichen Winkel
     this.starty = starty;
     this.animationPos = 0;
     this.inStartPos = false;
     this.animationSpeed = 0.03;
     this.posx = this.startx;
     this.posy = this.starty;
+    
 
     // Startwinkel als Parameter hinzugefügt
     this.startAngleDegrees = startAngle;
@@ -62,21 +64,39 @@ class symbol {
     this.endx = endx;
     this.endy = endy;
     this.rotationSpeed = 0.01; // Geschwindigkeit der Rotation
+
+    this.prevPosx = this.posx;
+    this.prevPosy = this.posy;
+
+    this.rotationDirection = 1; // 1 für positive Rotation, -1 für negative Rotation
   }
 
   update() {
     // Überprüfe, ob sich die Linie bewegt
-    if (dist(this.startx, this.starty, this.endx, this.endy) > 1) {
-      let dx = this.startx - this.endx;
-      let dy = this.starty - this.endy;
-      let currentSpeed = dist(this.startx, this.starty, this.endx, this.endy);
+    let dx = this.posx - this.prevPosx;
+    let dy = this.posy - this.prevPosy;
+    let currentSpeed = dist(this.startx, this.starty, this.endx, this.endy);
 
-      // Überprüfe, ob die Linie nicht an der Start- oder Endposition ist, bevor die Rotation aktualisiert wird
-      if ((this.posx !== this.startx || this.posy !== this.starty) && (this.posx !== this.endx || this.posy !== this.endy)) {
-        // Aktualisiere den Winkel basierend auf der aktuellen Geschwindigkeit
-        this.angle += this.rotationSpeed * currentSpeed;
-      }
+    // Überprüfe, ob die Linie nicht an der Start- oder Endposition ist, bevor die Rotation aktualisiert wird
+    if (abs(dx) > 1 || abs(dy) > 1) {
+      // Aktualisiere den Winkel basierend auf der aktuellen Geschwindigkeit
+      this.angle += this.rotationDirection * this.rotationSpeed * currentSpeed;
+    } else {
+      // Glätte den Übergang zum ursprünglichen Winkel
+      this.angle = lerp(this.angle, this.originalStartAngle, 0.1);
     }
+
+    // Begrenze den Winkel im Bereich von 0 bis 360 Grad
+    this.angle = (this.angle + 360) % 360;
+
+    // Setze die Rotation auf negativ, wenn der Winkel den ursprünglichen Startwinkel erreicht
+    if (this.angle === this.originalStartAngle) {
+      this.rotationDirection = -1;
+    }
+
+    // Speichere die aktuellen Positionen für den nächsten Update-Schritt
+    this.prevPosx = this.posx;
+    this.prevPosy = this.posy;
   }
 
   display() {
@@ -95,10 +115,11 @@ class symbol {
       rotate(radians(this.angle)); // Umwandlung in Bogenmaß vor der Rotation
     }
 
-    line(-10, 0, 10, 0);
+    line(-5, 0, 10, 0);
     pop();
   }
 }
+
 
 
 
