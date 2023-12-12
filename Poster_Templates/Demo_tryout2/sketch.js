@@ -16,25 +16,24 @@ function setup() {
   textAlign(CENTER, CENTER);
   textSize(10 * poster.vw);
 
-  lines[0] = new symbol(width * 0.2, height * 0.2);
-  lines[0].setEnd(width * 0.8, height * 0.8);
-
-  lines[1] = new symbol(width * 0.3, height * 0.2);
-  lines[1].setEnd(width * 0.6, height * 0.8);
-
-  lines[2] = new symbol(width * 0.3, height * 0.2);
-  lines[2].setEnd(width * 0.3, height * 0.9);
-
-  lines[3] = new symbol(7, 10);
-  lines[3].setEnd(width * 0.3, height * 0.9);
-
-  lines[4] = new symbol(2, 10);
-  lines[4].setEnd(width * 0.3, height * 0.9);
+  lines[0] = new symbol(width * 0.02, height * 0.2, width * 0.8, height * 0.8, 135);
+  lines[1] = new symbol(width * 0.029, height * 0.3, width * 0.6, height * 0.8, 135);
+  lines[2] = new symbol(width * 0.3, height * 0.2, width * 0.3, height * 0.9, 60);
+  lines[3] = new symbol(7, 10, width * 0.3, height * 0.9, 90);
+  lines[4] = new symbol(2, 10, width * 0.3, height * 0.9, 120);
 }
 
 function draw() {
-  background(0, 0, 0, 50);
-  // looping through the lines
+  // Hintergrundfarbe ändern, wenn pos x in der Mitte des Bildschirms ist
+  if (poster.posNormal.x < 0.5) {
+    background(255, 255, 255, 50);
+    stroke(0);
+  } else {
+    background(0, 0, 0, 50);
+    stroke(255);
+  }
+  
+  // Schleife durch die Linien
   for (let i = 0; i < lines.length; i++) {
     lines[i].update();
     lines[i].display();
@@ -45,7 +44,7 @@ function draw() {
 }
 
 class symbol {
-  constructor(startx, starty) {
+  constructor(startx, starty, endx, endy, startAngle) {
     this.startx = startx;
     this.starty = starty;
     this.animationPos = 0;
@@ -53,13 +52,16 @@ class symbol {
     this.animationSpeed = 0.03;
     this.posx = this.startx;
     this.posy = this.starty;
-    this.angle = 0;
-    this.rotationSpeed = 0.01; // Geschwindigkeit der Rotation
-  }
 
-  setEnd(endx, endy) {
+    // Startwinkel als Parameter hinzugefügt
+    this.startAngleDegrees = startAngle;
+
+    // Initialisieren des aktuellen Winkels mit dem Startwinkel
+    this.angle = this.startAngleDegrees;
+
     this.endx = endx;
     this.endy = endy;
+    this.rotationSpeed = 0.01; // Geschwindigkeit der Rotation
   }
 
   update() {
@@ -68,7 +70,7 @@ class symbol {
       let dx = this.startx - this.endx;
       let dy = this.starty - this.endy;
       let currentSpeed = dist(this.startx, this.starty, this.endx, this.endy);
-  
+
       // Überprüfe, ob die Linie nicht an der Start- oder Endposition ist, bevor die Rotation aktualisiert wird
       if ((this.posx !== this.startx || this.posy !== this.starty) && (this.posx !== this.endx || this.posy !== this.endy)) {
         // Aktualisiere den Winkel basierend auf der aktuellen Geschwindigkeit
@@ -76,8 +78,6 @@ class symbol {
       }
     }
   }
-  
-  
 
   display() {
     let constrainedX = constrain(poster.posNormal.x, 0.2, 0.8);
@@ -87,13 +87,12 @@ class symbol {
     this.posx = lerpedPosx;
     this.posy = lerpedPosy;
 
-    stroke(255);
     push();
     translate(this.posx, this.posy);
-    
+
     // Überprüfe, ob die Linie bewegt wird, bevor die Rotation aktualisiert wird
     if (dist(this.startx, this.starty, this.endx, this.endy) > 1) {
-      rotate(this.angle);
+      rotate(radians(this.angle)); // Umwandlung in Bogenmaß vor der Rotation
     }
 
     line(-10, 0, 10, 0);
