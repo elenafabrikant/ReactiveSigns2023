@@ -69,13 +69,14 @@ class symbol {
       let dy = this.starty - this.endy;
       let currentSpeed = dist(this.startx, this.starty, this.endx, this.endy);
   
-      // Überprüfe, ob die Linie nicht an der Startposition ist, bevor die Rotation aktualisiert wird
-      if (this.posx !== this.startx || this.posy !== this.starty) {
+      // Überprüfe, ob die Linie nicht an der Start- oder Endposition ist, bevor die Rotation aktualisiert wird
+      if ((this.posx !== this.startx || this.posy !== this.starty) && (this.posx !== this.endx || this.posy !== this.endy)) {
         // Aktualisiere den Winkel basierend auf der aktuellen Geschwindigkeit
         this.angle += this.rotationSpeed * currentSpeed;
       }
     }
   }
+  
   
 
   display() {
