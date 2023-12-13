@@ -128,7 +128,7 @@ function draw() {
     }
     
 
-  fill(255);
+  //fill(255);
 
 
 
