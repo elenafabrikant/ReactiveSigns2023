@@ -2,6 +2,8 @@
 //lines[0].setEnd( width * 0.8, height * 0.8, "t")
 
 function setupText() {
+	textSize(2.5 * poster.vw);
+	symbols = [] 
 	// shorten strings to be same length if they are different
 	if (myString.length > myStringTwo.length) {
 		myString.slice(0, myStringTwo.length);

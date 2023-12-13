@@ -10,6 +10,8 @@ class symbol {
       this.posy = this.starty;
       this.letter = letter;
       this.endLetter = ""
+      this.randomChangePoint = random(1.0)
+
       
   
       // Startwinkel als Parameter hinzugefügt
@@ -64,15 +66,21 @@ class symbol {
     display() {
 
       let currentLetter = this.letter;
+      let distanceStartEnd = dist(this.startx, this.starty, this.endx, this.endy)
       let changePoint = dist(this.posx, this.posy, this.endx, this.endy)
 
     
-      if (changePoint <= poster.vw*0.5) {
-        fill(255,0,0)
+      if (changePoint <= distanceStartEnd*this.randomChangePoint) {
+        fill(255);
        // circle(this.posx, this.posy, 5)
         currentLetter = this.endLetter;
+      }else{
+      fill(255);
+  
       }
+
       let constrainedX = constrain(poster.posNormal.x, 0.2, 0.8);
+      
       let lerpedPosx = map(constrainedX, 0.2, 0.8, this.startx, this.endx);
       let lerpedPosy = map(constrainedX, 0.2, 0.8, this.starty, this.endy);
   
@@ -85,7 +93,7 @@ class symbol {
       
        push();
         noStroke();
-        fill(0)
+        //fill(255,0,0)
         text(currentLetter,0,0);
       pop()
       // Überprüfe, ob die Linie bewegt wird, bevor die Rotation aktualisiert wird
