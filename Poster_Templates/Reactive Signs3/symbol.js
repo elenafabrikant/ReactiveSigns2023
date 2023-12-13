@@ -82,8 +82,8 @@ class symbol {
 
       let constrainedX = constrain(poster.posNormal.x, 0.3, 0.7);
       
-      let lerpedPosx = map(constrainedX, 0.2, 0.8, this.startx, this.endx);
-      let lerpedPosy = map(constrainedX, 0.2, 0.8, this.starty, this.endy);
+      let lerpedPosx = map(constrainedX, 0.3, 0.7, this.startx, this.endx);
+      let lerpedPosy = map(constrainedX, 0.3, 0.7, this.starty, this.endy);
   
       this.posx = lerpedPosx;
       this.posy = lerpedPosy;
